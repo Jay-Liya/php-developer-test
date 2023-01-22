@@ -21,4 +21,23 @@ class FeedbackMessage extends DataObject
     private static $has_one = [
         'FeedbackPage' => FeedbackPage::class
     ];
+
+    // Sorted by First Name, Email, and submitted date
+    private static $default_sort = ['FirstName', 'Email', 'Created'];
+
+    // Searchable using First Name, Last Name, and Email
+    private static $searchable_fields = [
+        'FirstName',
+        'LastName',
+        'Email'
+    ];
+
+    // First Name, Last Name, Email, Message, and Submitted Date as columns
+    private static $summary_fields = [
+        'FirstName',
+        'LastName',
+        'Email',
+        'Message',
+        'Created'
+    ];
 }

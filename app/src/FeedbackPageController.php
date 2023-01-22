@@ -39,19 +39,9 @@ class FeedbackPageController extends PageController
     // submit action
     public function submit($data, $form)
     {
-        // First Name validating for [A-Z] of both lower & upper cases
-        if (!preg_match("#^[a-zA-Z ]+$#", $data["FirstName"])) {
-            $form->sessionMessage('First Name contains characters other than letters.','bad');
-        }
-        // Last Name validating for [A-Z] of both lower & upper cases
-        else if (!preg_match("#^[a-zA-Z ]+$#", $data["LastName"])) {
-            $form->sessionMessage('Last Name contains characters other than letters.','bad');
-        }
-        // Message validating for 255 characters
-        else if (strlen($data["Message"]) > 255) {
-            $form->sessionMessage('Message length exceeded maximum allowed length(255)','bad');
-        }
-        else {
+        $validateResult = $this->validate($data['FirstName'],$data['LastName'],$data['Message']);
+
+        if($validateResult == 'good') {
             $message = FeedbackMessage::create();
             $message->FirstName = $data['FirstName'];
             $message->LastName = $data['LastName'];
@@ -61,7 +51,34 @@ class FeedbackPageController extends PageController
 
             $form->sessionMessage('Thanks for your feedback!', 'good');
         }
+        else {
+            $form->sessionMessage('Last Name contains characters other than letters.','bad');
+        }
 
         return $this->redirectBack();
+    }
+
+    /**
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $message
+     * @return string
+     */
+    public function validate(string $firstName, string $lastName, string $message): string
+    {
+        $result = "good";
+        // First Name validating for [A-Z] of both lower & upper cases
+        if (!preg_match("#^[a-zA-Z ]+$#", $firstName)) {
+            $result = 'First Name contains characters other than letters.';
+        }
+        // Last Name validating for [A-Z] of both lower & upper cases
+        else if (!preg_match("#^[a-zA-Z ]+$#", $lastName)) {
+            $result = 'Last Name contains characters other than letters.';
+        }
+        // Message validating for 255 characters
+        else if (strlen($message) > 255) {
+            $result = 'Message length exceeded maximum allowed length(255)';
+        }
+        return $result;
     }
 }

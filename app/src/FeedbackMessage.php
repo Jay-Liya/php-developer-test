@@ -6,6 +6,9 @@ use SilverStripe\ORM\DataObject;
 
 class FeedbackMessage extends DataObject
 {
+    // Declare table name
+    private static $table_name = 'FeedbackMessage';
+
     // Define database columns
     private static $db = [
         'FirstName' => 'Varchar(255)',

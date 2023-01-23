@@ -13,10 +13,10 @@ use SilverStripe\Forms\Form;
 
 class FeedbackPageController extends PageController
 {
-    private static $allowed_actions = ['Form'];
+    private static $allowed_actions = ['feedbackForm'];
 
     // Creating the Form
-    public function Form()
+    public function feedbackForm()
     {
         // Fields initialised with some constraints
         $fields = new FieldList(
@@ -27,13 +27,14 @@ class FeedbackPageController extends PageController
         );
 
         $actions = new FieldList(
+            new FormAction('reset', 'Reset'),
             new FormAction('submit', 'Submit')
         );
 
         // the required fields
         $required = new RequiredFields('FirstName', 'LastName', 'Email', 'Message');
 
-        return new Form($this, 'Form', $fields, $actions, $required);
+        return new Form($this, 'feedbackForm', $fields, $actions, $required);
     }
 
     // submit action
@@ -80,5 +81,11 @@ class FeedbackPageController extends PageController
             $result = 'Message length exceeded maximum allowed length(255)';
         }
         return $result;
+    }
+
+    // reset the form fields
+    public function reset()
+    {
+        return $this->redirectBack();
     }
 }
